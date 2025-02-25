@@ -1,6 +1,7 @@
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
+
 group = PUBLISH_GROUP_ID
 version = PUBLISH_VERSION
 
@@ -18,6 +19,20 @@ task androidSourcesJar(type: Jar) {
 }
 artifacts {
     archives androidSourcesJar
+}
+
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId = PUBLISH_GROUP_ID
+            artifactId = PUBLISH_ARTIFACT_ID
+            version = PUBLISH_VERSION
+
+            afterEvaluate {
+                from components.release
+            }
+        }
+    }
 }
 
 //afterEvaluate {
