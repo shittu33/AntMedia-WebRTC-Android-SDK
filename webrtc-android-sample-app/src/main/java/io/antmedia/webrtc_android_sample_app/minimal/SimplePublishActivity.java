@@ -53,7 +53,7 @@ public class SimplePublishActivity extends Activity {
             @Override
             public void onWebSocketConnected() {
                 super.onWebSocketConnected();
-                if(!PermissionHandler.checkPublishPermissions(SimplePublishActivity.this, false)){
+                if(!PermissionHandler.checkPublishPermissions(SimplePublishActivity.this, false,true)){
                     PermissionHandler.requestPublishPermissions(SimplePublishActivity.this, false);
                 }else{
                     startPublishing();

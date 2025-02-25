@@ -41,7 +41,7 @@ public class WebviewActivity extends Activity {
 
         webView = findViewById(R.id.webview);
         setupWebView();
-        if(!PermissionHandler.checkPublishPermissions(this, false)){
+        if(!PermissionHandler.checkPublishPermissions(this, false,true)){
             PermissionHandler.requestPublishPermissions(this, false);
         }
     }

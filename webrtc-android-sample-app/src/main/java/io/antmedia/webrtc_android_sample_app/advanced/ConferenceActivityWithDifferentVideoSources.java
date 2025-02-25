@@ -334,7 +334,7 @@ public class ConferenceActivityWithDifferentVideoSources extends TestableActivit
             if (!PermissionHandler.checkCameraPermissions(this)) {
                 PermissionHandler.requestCameraPermissions(this);
                 return;
-            }else if(!PermissionHandler.checkPublishPermissions(this, bluetoothEnabled)){
+            }else if(!PermissionHandler.checkPublishPermissions(this, bluetoothEnabled,true)){
                 PermissionHandler.requestPublishPermissions(this, bluetoothEnabled);
                 return;
             }

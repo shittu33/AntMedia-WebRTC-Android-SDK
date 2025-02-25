@@ -18,6 +18,7 @@ import io.antmedia.webrtcandroidframework.api.IWebRTCListener;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.widget.Toast;
 
 import androidx.activity.ComponentActivity;
 import androidx.activity.result.ActivityResultLauncher;
@@ -68,7 +69,8 @@ public class CallNotificationActivity extends ComponentActivity {
                 .setServerUrl(serverUrl)
                 .build();
 
-        streamId = "streamId" + (int)(Math.random()*9999);
+
+        streamId = "streamId" + (int) (Math.random() * 9999);
 
         PeerForNotificationActivity.streamId = streamId;
 
@@ -121,7 +123,9 @@ public class CallNotificationActivity extends ComponentActivity {
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
                     // FCM SDK (and your app) can post notifications.
+                    Toast.makeText(this, "isGranted", Toast.LENGTH_LONG).show();
                 } else {
+                    Toast.makeText(this, "not granted", Toast.LENGTH_LONG).show();
                     // TODO: Inform user that that your app will not show notifications.
                 }
             });
@@ -131,8 +135,11 @@ public class CallNotificationActivity extends ComponentActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
                     PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "isGranted", Toast.LENGTH_LONG).show();
                 // FCM SDK (and your app) can post notifications.
             } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                Toast.makeText(this, "not granted rational", Toast.LENGTH_LONG).show();
+
                 // TODO: display an educational UI explaining to the user the features that will be enabled
                 //       by them granting the POST_NOTIFICATION permission. This UI should provide the user
                 //       "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.
@@ -141,6 +148,8 @@ public class CallNotificationActivity extends ComponentActivity {
                 // Directly ask for the permission
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
             }
+        } else {
+            NotificationHelper.showCallNotification(this);
         }
     }
 }

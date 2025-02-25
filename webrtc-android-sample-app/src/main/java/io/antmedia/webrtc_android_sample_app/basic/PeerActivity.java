@@ -110,13 +110,15 @@ public class PeerActivity extends TestableActivity {
         });
 
     }
-
+    String mServerUrl = "wss://origin-streaming-server.villagesquare.io/Echo/websocket";
     public void createWebRTCClient(){
         webRTCClient = IWebRTCClient.builder()
                 .setLocalVideoRenderer(pipRenderer)
                 .setInitiateBeforeStream(initBeforeStream)
                 .addRemoteVideoRenderer(fullScreenRenderer)
-                .setServerUrl(serverUrl)
+//                .setServerUrl(serverUrl)
+                .setServerUrl(mServerUrl)
+                .setTurnServer("turn:ovh36.antmedia.io:3478","ovh36","ovh36")
                 .setBluetoothEnabled(bluetoothEnabled)
                 .setActivity(this)
                 .setWebRTCListener(createWebRTCListener())
@@ -137,12 +139,12 @@ public class PeerActivity extends TestableActivity {
             if (!PermissionHandler.checkCameraPermissions(this)) {
                 PermissionHandler.requestCameraPermissions(this);
                 return;
-            }else if(!PermissionHandler.checkPublishPermissions(this, bluetoothEnabled)){
+            }else if(!PermissionHandler.checkPublishPermissions(this, bluetoothEnabled,true)){
                 PermissionHandler.requestPublishPermissions(this, bluetoothEnabled);
                 return;
             }
         }else{
-            if(!PermissionHandler.checkPublishPermissions(this, bluetoothEnabled)){
+            if(!PermissionHandler.checkPublishPermissions(this, bluetoothEnabled,true)){
                 PermissionHandler.requestPublishPermissions(this, bluetoothEnabled);
                 return;
             }

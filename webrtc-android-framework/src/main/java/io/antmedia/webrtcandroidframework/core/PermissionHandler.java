@@ -28,6 +28,9 @@ public class PermissionHandler {
     public static final String[] PUBLISH_PERMISSIONS =
             new String[] {Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO};
 
+    public static final String[] AUDIO_PUBLISH_PERMISSIONS =
+            new String[]{Manifest.permission.RECORD_AUDIO};
+
     public static final String[] REQUIRED_MINIMUM_PERMISSIONS = {"android.permission.MODIFY_AUDIO_SETTINGS",
             "android.permission.INTERNET"};
 
@@ -60,12 +63,15 @@ public class PermissionHandler {
         return hasPermissions(activity, permissions);
     }
 
-    public static boolean checkPublishPermissions(Activity activity, boolean bluetoothEnabled){
+    public static boolean checkPublishPermissions(Activity activity, boolean bluetoothEnabled, boolean videoCallEnabled) {
         ArrayList<String> permissions = new ArrayList<>();
         permissions.addAll(Arrays.asList(REQUIRED_MINIMUM_PERMISSIONS));
-        permissions.addAll(Arrays.asList(PUBLISH_PERMISSIONS));
-
-        if(bluetoothEnabled){
+        if (videoCallEnabled) {
+            permissions.addAll(Arrays.asList(PUBLISH_PERMISSIONS));
+        } else {
+            permissions.addAll(Arrays.asList(AUDIO_PUBLISH_PERMISSIONS));
+        }
+        if (bluetoothEnabled) {
             permissions.addAll(Arrays.asList(BLUETOOTH_PERMISSIONS));
         }
 

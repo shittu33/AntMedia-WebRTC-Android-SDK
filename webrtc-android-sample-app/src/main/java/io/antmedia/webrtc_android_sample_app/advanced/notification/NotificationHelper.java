@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Build;
 import androidx.core.app.NotificationCompat;
 
+import io.antmedia.webrtc_android_sample_app.MainActivity;
 import io.antmedia.webrtc_android_sample_app.R;
 
 public class NotificationHelper {
@@ -37,11 +38,14 @@ public class NotificationHelper {
         }
 
         // Intent for the accept action
-        Intent acceptIntent = new Intent(context, AcceptCallReceiver.class);
+//        Intent acceptIntent = new Intent(context, AcceptCallReceiver.class);
+        Intent acceptIntent = new Intent(context, PeerForNotificationActivity.class);
+        acceptIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent acceptPendingIntent = PendingIntent.getBroadcast(context, 0, acceptIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-
         // Intent for the decline action
-        Intent declineIntent = new Intent(context, DeclineCallReceiver.class);
+//        Intent declineIntent = new Intent(context, DeclineCallReceiver.class);
+        Intent declineIntent = new Intent(context, MainActivity.class);
+        declineIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent declinePendingIntent = PendingIntent.getBroadcast(context, 0, declineIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
