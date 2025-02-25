@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'jacoco'
 ext {
-    PUBLISH_GROUP_ID = 'io.antmedia'
-    PUBLISH_VERSION = '2.11.1'
+    PUBLISH_GROUP_ID = 'io.shittu.antmedia'
+    PUBLISH_VERSION = '0.0.1'
     PUBLISH_ARTIFACT_ID = 'webrtc-android-framework'
 }
 apply from: 'publish-remote.gradle'
@@ -53,24 +53,24 @@ tasks.withType(Test) {
     }
 }
 
-//task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest','createDebugCoverageReport']) {
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest','createDebugCoverageReport']) {
 //    reports {
 //        xml.enabled = true
 //        html.enabled = true
 //    }
-//
-//    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
-//    def debugTree = fileTree(dir: "$project.buildDir/intermediates/javac/debug", excludes: fileFilter)
-//    def mainSrc = "$project.projectDir/src/main/java"
-//
-//    sourceDirectories.setFrom(files([mainSrc]))
-//    classDirectories.setFrom(files([debugTree]))
-//    executionData.setFrom(fileTree(dir: project.buildDir, includes: [
-//            'outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec',
-//            'outputs/code_coverage/debugAndroidTest/connected/**/*.ec'
-//
-//    ]))
-//}
+
+    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+    def debugTree = fileTree(dir: "$project.buildDir/intermediates/javac/debug", excludes: fileFilter)
+    def mainSrc = "$project.projectDir/src/main/java"
+
+    sourceDirectories.setFrom(files([mainSrc]))
+    classDirectories.setFrom(files([debugTree]))
+    executionData.setFrom(fileTree(dir: project.buildDir, includes: [
+            'outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec',
+            'outputs/code_coverage/debugAndroidTest/connected/**/*.ec'
+
+    ]))
+}
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
