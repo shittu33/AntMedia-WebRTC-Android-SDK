@@ -157,7 +157,7 @@ public class DynamicConferenceActivity extends TestableActivity {
                 .setInitiateBeforeStream(initBeforeStream)
                 .setBluetoothEnabled(bluetoothEnabled)
                 .setWebRTCListener(createWebRTCListener(roomId, streamId))
-                .setDataChannelObserver(createDatachannelObserver())
+                .setDataChannelObserver(createDataChannelObserver())
                 .build();
 
         joinButton = findViewById(R.id.join_conference_button);
@@ -215,7 +215,7 @@ public class DynamicConferenceActivity extends TestableActivity {
         }
     }
 
-    private IDataChannelObserver createDatachannelObserver() {
+    private IDataChannelObserver createDataChannelObserver() {
         return new DefaultDataChannelObserver() {
             @Override
             public void textMessageReceived(String messageText) {
@@ -331,6 +331,7 @@ public class DynamicConferenceActivity extends TestableActivity {
             @Override
             public void onNewVideoTrack(VideoTrack track, String trackId) {
                 String messageText = "New video track received";
+                Log.d(DynamicConferenceActivity.class.getSimpleName(),"onNewVideoTrack");
                 callbackCalled(messageText);
 
                 runOnUiThread(() -> {
