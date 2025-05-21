@@ -256,7 +256,7 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
     public void createReconnectorRunnables() {
         //only used in conference.
         publishReconnectorRunnable = () -> {
-            if(released || streamStoppedByUser){
+            if (released || streamStoppedByUser) {
                 return;
             }
             publishReconnectionHandler.postDelayed(publishReconnectorRunnable, PEER_RECONNECTION_RETRY_DELAY_MS);
@@ -292,7 +292,7 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
         };
         //only used in conference.
         playReconnectorRunnable = () -> {
-            if(released || streamStoppedByUser){
+            if (released || streamStoppedByUser) {
                 return;
             }
             releaseRemoteRenderers();
@@ -333,7 +333,7 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
         };
 
         peerReconnectorRunnable = () -> {
-            if(released || streamStoppedByUser){
+            if (released || streamStoppedByUser) {
                 return;
             }
             peerReconnectionHandler.postDelayed(peerReconnectorRunnable, PEER_RECONNECTION_RETRY_DELAY_MS);
@@ -364,7 +364,7 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
 
 
                     } else if (peerInfo.mode.equals(Mode.PLAY)) {
-                        if(config.remoteVideoRenderers.size() == 1){ //if its multitrack play dont release.
+                        if (config.remoteVideoRenderers.size() == 1) { //if its multitrack play dont release.
                             releaseRemoteRenderers();
                         }
                         Log.d(TAG, "Reconnect attempt for play");
@@ -398,10 +398,10 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
         sendAudioEnabled = config.audioCallEnabled;
         sendVideoEnabled = config.videoCallEnabled;
 
-        if(config.turnServerUri != null) {
+        if (config.turnServerUri != null) {
             iceServers.add(PeerConnection.IceServer.builder(config.turnServerUri)
-                            .setUsername(config.turnServerUserName)
-                            .setPassword(config.turnServerPassword)
+                    .setUsername(config.turnServerUserName)
+                    .setPassword(config.turnServerPassword)
                     .createIceServer());
         }
 
@@ -723,9 +723,9 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
     }
 
     public void init() {
-        if(config.videoCallEnabled && !PermissionHandler.checkCameraPermissions(config.activity)) {
-            Toast.makeText(config.activity,"Camera permissions not granted. Cannot init.", Toast.LENGTH_LONG).show();
-            Log.e(TAG,"Camera permissions not granted. Cannot init.");
+        if (config.videoCallEnabled && !PermissionHandler.checkCameraPermissions(config.activity)) {
+            Toast.makeText(config.activity, "Camera permissions not granted. Cannot init.", Toast.LENGTH_LONG).show();
+            Log.e(TAG, "Camera permissions not granted. Cannot init.");
             return;
         }
 
@@ -927,7 +927,7 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
         if (wsHandler != null && wsHandler.isConnected()) {
 
             PeerInfo peerInfo = getPeerInfoFor(streamId);
-            if(peerInfo != null && peerInfo.mode == Mode.P2P){
+            if (peerInfo != null && peerInfo.mode == Mode.P2P) {
                 wsHandler.leaveFromP2P(streamId);
                 release(byUser); // releasing SDK here might not be practical for all P2P users.
                 return;
@@ -970,7 +970,7 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
     }
 
     private void publishPlayIfRequested() {
-        if(wsHandler == null){
+        if (wsHandler == null) {
             return;
         }
         for (Map.Entry<String, PeerInfo> entry : peers.entrySet()) {
@@ -1007,9 +1007,9 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
         createPeerInfo(streamId, token, videoCallEnabled, audioCallEnabled, subscriberId, subscriberCode, streamName, mainTrackId, null, Mode.PUBLISH);
         init();
 
-        if(!PermissionHandler.checkPublishPermissions(config.activity, config.bluetoothEnabled,videoCallEnabled)){
-            Toast.makeText(config.activity,"Publish permissions not granted. Cant publish.", Toast.LENGTH_LONG).show();
-            Log.e(TAG,"Publish permissions not granted. Cant publish.");
+        if (!PermissionHandler.checkPublishPermissions(config.activity, config.bluetoothEnabled, videoCallEnabled)) {
+            Toast.makeText(config.activity, "Publish permissions not granted. Cant publish.", Toast.LENGTH_LONG).show();
+            Log.e(TAG, "Publish permissions not granted. Cant publish.");
             return;
         }
 
@@ -1058,15 +1058,15 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
             init();
         }
 
-        if(!PermissionHandler.checkPlayPermissions(config.activity, config.bluetoothEnabled)){
-            Toast.makeText(config.activity,"Play permissions not granted. Cant play.", Toast.LENGTH_LONG).show();
-            Log.e(TAG,"Play permissions not granted. Cant play.");
+        if (!PermissionHandler.checkPlayPermissions(config.activity, config.bluetoothEnabled)) {
+            Toast.makeText(config.activity, "Play permissions not granted. Cant play.", Toast.LENGTH_LONG).show();
+            Log.e(TAG, "Play permissions not granted. Cant play.");
             return;
         }
 
         initializeAudioManager();
 
-        Log.i(TAG, "Play: "+streamId);
+        Log.i(TAG, "Play: " + streamId);
 
         if (isWebSocketConnected()) {
             Log.i(TAG, "Play request sent through ws for stream: " + streamId);
@@ -1079,7 +1079,7 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
     public void join(String streamId) {
         join(streamId, "");
     }
-  
+
     public void registerPushNotificationToken(String subscriberId, String authToken, String pushNotificationToken, String tokenType) {
         if (wsHandler != null && wsHandler.isConnected()) {
             wsHandler.registerPushNotificationToken(subscriberId, authToken, pushNotificationToken, tokenType);
@@ -1091,7 +1091,7 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
             wsHandler.sendPushNotification(subscriberId, authToken, pushNotificationContent, receiverSubscriberIdArray);
         }
     }
-  
+
     public void join(String streamId, String token) {
         Log.e(TAG, "Join: " + streamId);
 
@@ -1129,19 +1129,28 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
         enableStatsEvents(streamId, true, STAT_CALLBACK_PERIOD);
     }
 
+    private static final long AUDIO_DEVICE_CHANGE_DEBOUNCE_MS = 500; // Debounce time in milliseconds
+    private long lastAudioDeviceChangeTimeMs = 0;
+
     /**
      * Handles changes in audio devices reported by the audio manager, such as
      * switching from a wired headset to a speakerphone.
      *
-     * @param device The currently selected audio device.
+     * @param device           The currently selected audio device.
      * @param availableDevices A set of available audio devices.
      */
     public void onAudioManagerDevicesChanged(
             final AppRTCAudioManager.AudioDevice device, final Set<AppRTCAudioManager.AudioDevice> availableDevices) {
-        if(audioManager == null){
+        if (audioManager == null) {
             return;
         }
         Log.i(TAG, "Audio devices changed. Available: " + availableDevices + ", Selected: " + device);
+
+        long currentTimeMs = System.currentTimeMillis();
+        if (currentTimeMs - lastAudioDeviceChangeTimeMs < AUDIO_DEVICE_CHANGE_DEBOUNCE_MS) {
+            return; // Ignore this change if it's too close to the previous one
+        }
+        lastAudioDeviceChangeTimeMs = currentTimeMs;
 
         // Prioritize Bluetooth if available
         if (availableDevices.contains(AppRTCAudioManager.AudioDevice.BLUETOOTH)) {
@@ -1152,13 +1161,14 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
 
         // Fallback to the current selected device
         Log.i(TAG, "Switching to the selected device: " + device);
+
         audioManager.selectAudioDevice(device);
 
     }
 
     // Disconnect from remote resources, dispose of local resources, and exit.
     public void release(boolean closeWebsocket) {
-        if(released){
+        if (released) {
             return;
         }
         released = true;
@@ -1243,20 +1253,20 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
     }
 
     public void changeVideoSource(StreamSource newSource) {
-            if (!config.videoSource.equals(newSource)) {
-                if (newSource.equals(StreamSource.SCREEN) && adm != null) {
-                    adm.setMediaProjection(config.mediaProjection);
-                }
-
-                Log.i(TAG, "Change video source started!");
-                VideoCapturer newVideoCapturer = createVideoCapturer(newSource);
-                /* When user try to change video source after stopped the publishing
-                 * peerConnectionClient will null, until start another broadcast
-                 */
-                changeVideoCapturer(newVideoCapturer);
-                config.videoSource = newSource;
-                Log.i(TAG, "Change video source done!");
+        if (!config.videoSource.equals(newSource)) {
+            if (newSource.equals(StreamSource.SCREEN) && adm != null) {
+                adm.setMediaProjection(config.mediaProjection);
             }
+
+            Log.i(TAG, "Change video source started!");
+            VideoCapturer newVideoCapturer = createVideoCapturer(newSource);
+            /* When user try to change video source after stopped the publishing
+             * peerConnectionClient will null, until start another broadcast
+             */
+            changeVideoCapturer(newVideoCapturer);
+            config.videoSource = newSource;
+            Log.i(TAG, "Change video source done!");
+        }
 
     }
 
@@ -1352,10 +1362,10 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
         }
         reconnectionInProgress = true;
 
-        if(isConference()){
+        if (isConference()) {
             Log.i(TAG, "Conference! Will try to republish in  " + PEER_RECONNECTION_DELAY_MS + " ms.");
             publishReconnectionHandler.postDelayed(publishReconnectorRunnable, PEER_RECONNECTION_DELAY_MS);
-        }else{
+        } else {
             Log.i(TAG, "Peer was connected before. Will try to republish/replay in " + PEER_RECONNECTION_DELAY_MS + " ms.");
             peerReconnectionHandler.postDelayed(peerReconnectorRunnable, PEER_RECONNECTION_DELAY_MS);
         }
@@ -1366,7 +1376,7 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
         this.handler.post(() -> {
             Log.d(TAG, "ICE disconnected");
 
-           if (config.webRTCListener != null) {
+            if (config.webRTCListener != null) {
                 config.webRTCListener.onIceDisconnected(streamId);
             }
 
@@ -1379,25 +1389,25 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
                 rePublishPlay();
             }
 
-            if(isConference()){
+            if (isConference()) {
                 releaseRemoteRenderers();
             }
 
         });
     }
 
-    private boolean isConference(){
+    private boolean isConference() {
         return roomId != null;
     }
 
     private boolean isAllPeersConnected() {
         for (Map.Entry<String, PeerInfo> entry : peers.entrySet()) {
             PeerConnection peerConnection = entry.getValue().peerConnection;
-            if(peerConnection == null){
+            if (peerConnection == null) {
                 return false;
             }
             PeerConnection.PeerConnectionState peerConnectionState = peerConnection.connectionState();
-            if(peerConnectionState != PeerConnection.PeerConnectionState.CONNECTED){
+            if (peerConnectionState != PeerConnection.PeerConnectionState.CONNECTED) {
                 return false;
             }
         }
@@ -1418,28 +1428,28 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
         });
     }
 
-    private boolean isPublishConnected(){
+    private boolean isPublishConnected() {
         for (Map.Entry<String, PeerInfo> entry : peers.entrySet()) {
             PeerConnection peerConnection = entry.getValue().peerConnection;
-            if(peerConnection == null){
+            if (peerConnection == null) {
                 return false;
             }
             PeerConnection.PeerConnectionState peerConnectionState = peerConnection.connectionState();
-            if(entry.getValue().mode == Mode.PUBLISH && peerConnectionState != PeerConnection.PeerConnectionState.CONNECTED){
+            if (entry.getValue().mode == Mode.PUBLISH && peerConnectionState != PeerConnection.PeerConnectionState.CONNECTED) {
                 return false;
             }
         }
         return true;
     }
 
-    private boolean isPlayConnected(){
+    private boolean isPlayConnected() {
         for (Map.Entry<String, PeerInfo> entry : peers.entrySet()) {
             PeerConnection peerConnection = entry.getValue().peerConnection;
-            if(peerConnection == null){
+            if (peerConnection == null) {
                 return false;
             }
             PeerConnection.PeerConnectionState peerConnectionState = peerConnection.connectionState();
-            if(entry.getValue().mode == Mode.PLAY && peerConnectionState != PeerConnection.PeerConnectionState.CONNECTED){
+            if (entry.getValue().mode == Mode.PLAY && peerConnectionState != PeerConnection.PeerConnectionState.CONNECTED) {
                 return false;
             }
         }
@@ -1449,8 +1459,8 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
     public void onConnected(String streamId) {
         Log.i(TAG, "Connected for streamId:" + streamId);
 
-        if(config.reconnectionEnabled && reconnectionInProgress  && isConference() && isPublishConnected() && !isPlayConnected()){
-            Log.i(TAG,"Conference reconnection. Publish connected. Play not connected. Try to reconnect play.");
+        if (config.reconnectionEnabled && reconnectionInProgress && isConference() && isPublishConnected() && !isPlayConnected()) {
+            Log.i(TAG, "Conference reconnection. Publish connected. Play not connected. Try to reconnect play.");
             publishReconnectionHandler.removeCallbacksAndMessages(null);
             playReconnectionHandler.postDelayed(playReconnectorRunnable, PEER_RECONNECTION_DELAY_MS);
             return;
@@ -1495,7 +1505,7 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
         this.handler.post(() -> {
             if (sdp.type == SessionDescription.Type.OFFER) {
                 PeerInfo peerInfo = getPeerInfoFor(streamId);
-                if(peerInfo != null){
+                if (peerInfo != null) {
                     PeerConnection pc = peerInfo.peerConnection;
                     if (pc == null) {
                         boolean createLocalTrack = peerInfo.mode == Mode.P2P;
@@ -1533,7 +1543,7 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
 
     @Override
     public void onPublishStarted(String streamId) {
-        Log.d(TAG,"Publish started.");
+        Log.d(TAG, "Publish started.");
         streamStoppedByUser = false;
 
         this.handler.post(() -> {
@@ -1565,7 +1575,7 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
 
             createPeerConnection(streamId, true);
             PeerInfo peerInfo = getPeerInfoFor(streamId);
-            if(peerInfo != null && peerInfo.mode == Mode.P2P){
+            if (peerInfo != null && peerInfo.mode == Mode.P2P) {
                 createOffer(streamId);
             }
         });
@@ -1760,12 +1770,12 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
             if (config.dataChannelObserver == null) return;
             handler.post(() ->
             {
-                if(dataChannel != null){
+                if (dataChannel != null) {
                     Log.d(TAG, "Data channel buffered amount changed: " + dataChannel.label() + ": " + dataChannel.state());
-                    try{
+                    try {
                         config.dataChannelObserver.onBufferedAmountChange(previousAmount, dataChannel.label());
 
-                    }catch (IllegalStateException e){
+                    } catch (IllegalStateException e) {
                         Log.e(TAG, "Data channel related error:" + e.getMessage());
                     }
                 }
@@ -1779,9 +1789,9 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
         public void onStateChange() {
             handler.post(() -> {
                 if (config.dataChannelObserver != null && dataChannel != null) {
-                    try{
+                    try {
                         config.dataChannelObserver.onStateChange(dataChannel.state(), dataChannel.label());
-                    }catch (IllegalStateException e){
+                    } catch (IllegalStateException e) {
                         Log.e(TAG, "Data channel related error:" + e.getMessage());
                     }
                 }
@@ -1798,9 +1808,9 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
             DataChannel.Buffer bufferCopy = new DataChannel.Buffer(copyByteBuffer, binary);
             handler.post(() -> {
                 if (config.dataChannelObserver == null || dataChannel == null) return;
-                try{
+                try {
                     config.dataChannelObserver.onMessage(bufferCopy, dataChannel.label());
-                }catch (IllegalStateException e) {
+                } catch (IllegalStateException e) {
                     Log.e(TAG, "Data channel related error:" + e.getMessage());
                 }
             });
@@ -2060,17 +2070,17 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
 
             setWebRTCLogLevel();
 
-            if(createLocalTrack){
+            if (createLocalTrack) {
 
                 List<String> mediaStreamLabels = Collections.singletonList("ARDAMS");
-                try{
+                try {
                     if (config.videoCallEnabled) {
                         peerConnection.addTrack(createVideoTrack(videoCapturer), mediaStreamLabels);
                     }
                     peerConnection.addTrack(createAudioTrack(), mediaStreamLabels);
 
-                }catch (IllegalStateException e){
-                    Log.e(TAG,"Could not add track to PC. Is it in closed state? Peer connection state " + peerConnection.connectionState().name()+" Error message: "+e.getMessage());
+                } catch (IllegalStateException e) {
+                    Log.e(TAG, "Could not add track to PC. Is it in closed state? Peer connection state " + peerConnection.connectionState().name() + " Error message: " + e.getMessage());
                     return;
                 }
 
@@ -2194,7 +2204,7 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
             eglBase.release();
             eglBase = null;
         }
-        if(blackFrameSender != null){
+        if (blackFrameSender != null) {
             blackFrameSender.stop();
             blackFrameSender = null;
         }
@@ -2211,7 +2221,7 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
         playReconnectionHandler.removeCallbacksAndMessages(null);
     }
 
-    private void clearStatsCollector(){
+    private void clearStatsCollector() {
         statsCollector.getPublishStats().reset();
         statsCollector.getPlayStats().reset();
     }
@@ -2280,14 +2290,14 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
     }
 
     public void toggleSendVideo(boolean enableVideo) {
-        if(!config.videoCallEnabled){
+        if (!config.videoCallEnabled) {
             Log.i(TAG, "Cannot change send video because video call is disabled.");
             return;
         }
         executor.execute(() -> {
             sendVideoEnabled = enableVideo;
             if (enableVideo) {
-                if(blackFrameSender != null && blackFrameSender.isRunning()){
+                if (blackFrameSender != null && blackFrameSender.isRunning()) {
                     blackFrameSender.stop();
                     blackFrameSender = null;
                 }
@@ -2427,7 +2437,7 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
     }
 
     public void setVideoMaxBitrate(@androidx.annotation.Nullable final Integer maxBitrateKbps) {
-        if(released){
+        if (released) {
             return;
         }
         executor.execute(() -> {
@@ -2771,15 +2781,15 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
         }
     }
 
-    public boolean isLocalVideoTrackEnabled(){
-        if(localVideoTrack == null){
+    public boolean isLocalVideoTrackEnabled() {
+        if (localVideoTrack == null) {
             return false;
         }
         return localVideoTrack.enabled();
     }
 
-    public boolean isLocalAudioTrackEnabled(){
-        if(localAudioTrack == null){
+    public boolean isLocalAudioTrackEnabled() {
+        if (localAudioTrack == null) {
             return false;
         }
         return localAudioTrack.enabled();
@@ -2808,7 +2818,7 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
         return videoCapturer;
     }
 
-    public void setVideoCapturer(VideoCapturer videoCapturer){
+    public void setVideoCapturer(VideoCapturer videoCapturer) {
         this.videoCapturer = videoCapturer;
     }
 
@@ -2843,6 +2853,7 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents {
     public ArrayList<PeerConnection.IceServer> getIceServers() {
         return iceServers;
     }
+
     @Override
     public boolean isShutdown() {
         return released;
